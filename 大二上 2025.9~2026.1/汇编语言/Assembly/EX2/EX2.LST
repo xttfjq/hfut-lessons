@@ -1,0 +1,116 @@
+Microsoft (R) Macro Assembler Version 5.00                  11/5/25 14:13:55
+                                                             Page     1-1
+
+
+       1 0000				data segment 
+       2 0000  0005			    x dw 5 
+       3 0002  0003			    y dw 3 
+       4 0004  0006[			    buffer db 6 dup('$') 
+       5	   24			
+       6			 ]	
+       7				
+       8 000A				data ends 
+       9				 
+      10 0000				code segment 
+      11				assume cs:code, ds:data 
+      12 0000				start: 
+      13 0000  B8 ---- R		    mov ax, data 
+      14 0003  8E D8			    mov ds, ax 
+      15				 
+      16 0005  FF 36 0000 R		    push x 
+      17 0009  FF 36 0002 R		    push y 
+      18 000D  E8 001A R		    call func 
+      19 0010  83 C4 04			    add sp, 4 
+      20				 
+      21				    ; AX 中为结果，输出十进制 
+      22 0013  E8 002C R		    call print_decimal 
+      23				 
+      24 0016  B4 4C			    mov ah, 4ch 
+      25 0018  CD 21			    int 21h 
+      26				 
+      27 001A				func proc 
+      28 001A  55			    push bp 
+      29 001B  8B EC			    mov bp, sp 
+      30 001D  8B 46 06			    mov ax, [bp+6]  ; x 
+      31 0020  8B 5E 04			    mov bx, [bp+4]  ; y 
+      32 0023  F7 EB			    imul bx         ; dx:ax = x*y 
+      33 0025  03 46 06			    add ax, [bp+6]  ; +x 
+      34 0028  2B C3			    sub ax, bx      ; -y 
+      35 002A  5D			    pop bp 
+      36 002B  C3			    ret 
+      37 002C				func endp 
+      38				 
+      39 002C				print_decimal proc 
+      40				    ; 输入 AX = 有符号数 
+      41 002C  BB 000A			    mov bx, 10 
+      42 002F  B9 0000			    mov cx, 0 
+      43 0032  85 C0			    test ax, ax 
+      44 0034  79 0A			    jns positive 
+      45 0036  F7 D8			    neg ax 
+      46 0038  50			    push ax 
+      47 0039  B2 2D			    mov dl, '-' 
+      48 003B  B4 02			    mov ah, 2 
+      49 003D  CD 21			    int 21h 
+      50 003F  58			    pop ax 
+      51 0040				positive: 
+      52 0040  33 D2			    xor dx, dx 
+      53 0042  F7 F3			    div bx 
+      54 0044  52			    push dx 
+Microsoft (R) Macro Assembler Version 5.00                  11/5/25 14:13:55
+                                                             Page     1-2
+
+
+      55 0045  41			    inc cx 
+      56 0046  3D 0000			    cmp ax, 0 
+      57 0049  75 F5			    jnz positive 
+      58 004B				print_loop: 
+      59 004B  5A			    pop dx 
+      60 004C  80 C2 30			    add dl, '0' 
+      61 004F  B4 02			    mov ah, 2 
+      62 0051  CD 21			    int 21h 
+      63 0053  E2 F6			    loop print_loop 
+      64 0055  C3			    ret 
+      65 0056				print_decimal endp 
+      66				 
+      67 0056				code ends 
+      68				end start 
+Microsoft (R) Macro Assembler Version 5.00                  11/5/25 14:13:55
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	0056	PARA	NONE	
+DATA . . . . . . . . . . . . . .  	000A	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+BUFFER . . . . . . . . . . . . .  	L BYTE	0004	DATA	Length = 0006
+
+FUNC . . . . . . . . . . . . . .  	N PROC	001A	CODE	Length = 0012
+
+POSITIVE . . . . . . . . . . . .  	L NEAR	0040	CODE
+PRINT_DECIMAL  . . . . . . . . .  	N PROC	002C	CODE	Length = 002A
+PRINT_LOOP . . . . . . . . . . .  	L NEAR	004B	CODE
+
+START  . . . . . . . . . . . . .  	L NEAR	0000	CODE
+
+X  . . . . . . . . . . . . . . .  	L WORD	0000	DATA
+
+Y  . . . . . . . . . . . . . . .  	L WORD	0002	DATA
+
+@FILENAME  . . . . . . . . . . .  	TEXT  ex2		
+
+
+     65 Source  Lines
+     65 Total   Lines
+     12 Symbols
+
+  50540 + 466004 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

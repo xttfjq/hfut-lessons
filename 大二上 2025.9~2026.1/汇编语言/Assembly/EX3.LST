@@ -1,0 +1,117 @@
+Microsoft (R) Macro Assembler Version 5.00                  11/11/25 20:04:32
+                                                             Page     1-1
+
+
+       1				assume cs:code,ds:data 
+       2 0000				data segment 
+       3 0000  ???? ????		oldisr dw ?,? 
+       4 0004  00			timer db 0 
+       5 0005  00			count db 0 
+       6 0006  0D 0A 24			new db 0dh,0ah,"$" 
+       7 0009				data ends 
+       8 0000				code segment 
+       9 0000  B8 ---- R		start:mov ax,data 
+      10 0003  8E D8			    mov ds,ax 
+      11 0005  B8 0000			    mov ax,0 
+      12 0008  8E C0			    mov es,ax 
+      13 000A  26: A1 0070		    mov ax,es:[1ch*4] 
+      14 000E  A3 0000 R		    mov oldisr[0],ax 
+      15 0011  26: A1 0072		    mov ax,es:[1ch*4+2] 
+      16 0015  A3 0002 R		    mov oldisr[2],ax    ;保存原中断 
+      17 0018  26: C7 06 0070 0041 R	    mov word ptr es:[1ch*4],offset isr 
+      18 001F  26: C7 06 0072 ---- R	    mov word ptr es:[1ch*4+2],seg isr  
+					   ;设置新中断 
+      19 0026  80 3E 0004 R 59		again:cmp timer, 89 
+      20 002B  77 02			    ja exit 
+      21 002D  EB F7			    jmp again 
+      22 002F  A1 0000 R		exit:mov ax,oldisr[0] 
+      23 0032  26: A3 0070		    mov es:[1ch*4],ax 
+      24 0036  A1 0002 R		    mov ax,oldisr[2] 
+      25 0039  26: A3 0072		    mov es:[1ch*4+2],ax 
+      26 003D  B4 4C			    mov ah,4ch 
+      27 003F  CD 21			    int 21h 
+      28 0041				isr proc far 
+      29 0041  50			    push ax 
+      30 0042  53			    push bx 
+      31 0043  51			    push cx 
+      32 0044  52			    push dx 
+      33 0045  FB			    sti 
+      34 0046  FE 06 0005 R		    inc count 
+      35 004A  80 3E 0005 R 12		    cmp count,1000/55 
+      36 004F  72 2E			    jb s 
+      37 0051  FE 06 0004 R		    inc timer    
+      38 0055  C6 06 0005 R 00		    mov count,0 
+      39 005A  A0 0004 R		    mov al,timer 
+      40 005D  B4 00			    mov ah,0 
+      41 005F  B7 0A			    mov bh,10 
+      42 0061  F6 F7			    div bh 
+      43 0063  8A F4			    mov dh,ah 
+      44 0065  8A D0			    mov dl,al 
+      45 0067  80 C2 30			    add dl,30h 
+      46 006A  B4 02			    mov ah,2 
+      47 006C  CD 21			    int 21h 
+      48 006E  8A D6			    mov dl,dh 
+      49 0070  80 C2 30			    add dl,30h 
+      50 0073  B4 02			    mov ah,2 
+      51 0075  CD 21			    int 21h 
+      52 0077  8D 16 0006 R		    lea dx,new 
+      53 007B  B4 09			    mov ah,9 
+Microsoft (R) Macro Assembler Version 5.00                  11/11/25 20:04:32
+                                                             Page     1-2
+
+
+      54 007D  CD 21			    int 21h 
+      55 007F  9C			s:pushf 
+      56 0080  FF 1E 0000 R		    call dword ptr oldisr 
+      57 0084  5A			    pop dx 
+      58 0085  59			    pop cx 
+      59 0086  5B			    pop bx 
+      60 0087  58			    pop ax   
+      61 0088  CF			    iret 
+      62				 
+      63 0089				isr endp 
+      64 0089				code ends 
+      65				end start 
+Microsoft (R) Macro Assembler Version 5.00                  11/11/25 20:04:32
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	0089	PARA	NONE	
+DATA . . . . . . . . . . . . . .  	0009	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+AGAIN  . . . . . . . . . . . . .  	L NEAR	0026	CODE
+
+COUNT  . . . . . . . . . . . . .  	L BYTE	0005	DATA
+
+EXIT . . . . . . . . . . . . . .  	L NEAR	002F	CODE
+
+ISR  . . . . . . . . . . . . . .  	F PROC	0041	CODE	Length = 0048
+
+NEW  . . . . . . . . . . . . . .  	L BYTE	0006	DATA
+
+OLDISR . . . . . . . . . . . . .  	L WORD	0000	DATA
+
+S  . . . . . . . . . . . . . . .  	L NEAR	007F	CODE
+START  . . . . . . . . . . . . .  	L NEAR	0000	CODE
+
+TIMER  . . . . . . . . . . . . .  	L BYTE	0004	DATA
+
+@FILENAME  . . . . . . . . . . .  	TEXT  ex3		
+
+
+     65 Source  Lines
+     65 Total   Lines
+     13 Symbols
+
+  50428 + 466116 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

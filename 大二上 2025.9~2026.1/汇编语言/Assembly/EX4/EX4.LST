@@ -1,0 +1,122 @@
+Microsoft (R) Macro Assembler Version 5.00                  11/5/25 14:29:11
+                                                             Page     1-1
+
+
+       1 0000				data segment 
+       2 0000  49 6E 70 75 74 20 73	    prompt db 'Input string: $' 
+       3       74 72 69 6E 67 3A 20	
+       4       24			
+       5 000F  0D 0A 59 65 73 24	    yes_msg db 0dh, 0ah, 'Yes$'     
+       6 0015  0D 0A 4E 6F 24		    no_msg db 0dh, 0ah, 'No$'       
+       7 001A  32 00			    buffer db 50, 0, 50 dup('$') 
+       8       0032[			
+       9	   24			
+      10			 ]	
+      11				
+      12 004E				data ends 
+      13				 
+      14 0000				code segment 
+      15				assume cs:code, ds:data 
+      16 0000				start: 
+      17 0000  B8 ---- R		    mov ax, data 
+      18 0003  8E D8			    mov ds, ax 
+      19				 
+      20				    ; 显示提示 
+      21 0005  BA 0000 R		    mov dx, offset prompt 
+      22 0008  B4 09			    mov ah, 9 
+      23 000A  CD 21			    int 21h 
+      24				 
+      25				    ; 读字符串 
+      26 000C  BA 001A R		    mov dx, offset buffer 
+      27 000F  B4 0A			    mov ah, 0ah 
+      28 0011  CD 21			    int 21h 
+      29				 
+      30				    ; 查找子串 
+      31 0013  BE 001C R		    mov si, offset buffer+2 
+      32 0016				search: 
+      33 0016  8A 04			    mov al, [si] 
+      34 0018  3C 0D			    cmp al, 0dh        ; 遇到回车结束 
+      35 001A  74 1B			    je not_found 
+      36 001C  3C 61			    cmp al, 'a' 
+      37 001E  75 0E			    jne next_char 
+      38 0020  8A 44 01			    mov al, [si+1] 
+      39 0023  3C 73			    cmp al, 's' 
+      40 0025  75 07			    jne next_char 
+      41 0027  8A 44 02			    mov al, [si+2] 
+      42 002A  3C 6D			    cmp al, 'm' 
+      43 002C  74 03			    je found 
+      44 002E				next_char: 
+      45 002E  46			    inc si 
+      46 002F  EB E5			    jmp search 
+      47				 
+      48 0031				found: 
+      49 0031  BA 000F R		    mov dx, offset yes_msg 
+      50 0034  EB 04 90			    jmp output 
+      51				 
+      52 0037				not_found: 
+      53 0037  BA 0015 R		    mov dx, offset no_msg 
+      54				 
+Microsoft (R) Macro Assembler Version 5.00                  11/5/25 14:29:11
+                                                             Page     1-2
+
+
+      55 003A				output: 
+      56 003A  B4 09			    mov ah, 9 
+      57 003C  CD 21			    int 21h 
+      58				 
+      59				    ; 再输出一个换行使光标到下一行 
+      60 003E  B2 0D			    mov dl, 0dh 
+      61 0040  B4 02			    mov ah, 2 
+      62 0042  CD 21			    int 21h 
+      63 0044  B2 0A			    mov dl, 0ah 
+      64 0046  B4 02			    mov ah, 2 
+      65 0048  CD 21			    int 21h 
+      66				 
+      67 004A  B4 4C			    mov ah, 4ch 
+      68 004C  CD 21			    int 21h 
+      69				 
+      70 004E				code ends 
+      71				end start 
+Microsoft (R) Macro Assembler Version 5.00                  11/5/25 14:29:11
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	004E	PARA	NONE	
+DATA . . . . . . . . . . . . . .  	004E	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+BUFFER . . . . . . . . . . . . .  	L BYTE	001A	DATA
+
+FOUND  . . . . . . . . . . . . .  	L NEAR	0031	CODE
+
+NEXT_CHAR  . . . . . . . . . . .  	L NEAR	002E	CODE
+NOT_FOUND  . . . . . . . . . . .  	L NEAR	0037	CODE
+NO_MSG . . . . . . . . . . . . .  	L BYTE	0015	DATA
+
+OUTPUT . . . . . . . . . . . . .  	L NEAR	003A	CODE
+
+PROMPT . . . . . . . . . . . . .  	L BYTE	0000	DATA
+
+SEARCH . . . . . . . . . . . . .  	L NEAR	0016	CODE
+START  . . . . . . . . . . . . .  	L NEAR	0000	CODE
+
+YES_MSG  . . . . . . . . . . . .  	L BYTE	000F	DATA
+
+@FILENAME  . . . . . . . . . . .  	TEXT  ex4		
+
+
+     65 Source  Lines
+     65 Total   Lines
+     14 Symbols
+
+  50540 + 466004 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

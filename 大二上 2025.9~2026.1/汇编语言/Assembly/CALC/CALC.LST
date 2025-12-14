@@ -1,0 +1,77 @@
+Microsoft (R) Macro Assembler Version 5.00                  11/1/25 23:13:49
+                                                             Page     1-1
+
+
+       1				.model small 
+       2 0100				.stack 100h 
+       3				 
+       4 0000				.data 
+       5 0000  0005			    X   dw  5       ; X = 5 
+       6 0002  000A			    Y   dw  10      ; Y = 10 
+       7 0004  01F4			    Z   dw  500     ; Z = 500 
+       8 0006  03E8			    V   dw  1000    ; V = 1000 
+       9				 
+      10 0000				.code 
+      11 0000				main: 
+      12 0000  B8 ---- R		    mov ax, @data 
+      13 0003  8E D8			    mov ds, ax 
+      14 0005  A1 0000 R		    mov ax, X 
+      15 0008  F7 2E 0002 R		    imul Y       
+      16 000C  03 06 0004 R		    add ax, Z    
+      17 0010  83 D2 00			    ADC DX, 0 
+      18 0013  2D 02D0			    sub ax, 720    
+      19 0016  83 DA 00			    SBB DX, 0 
+      20 0019  8B D8			    MOV BX,AX 
+      21 001B  8B CA			    MOV CX,DX   ;CX.BX=X*Y+Z-720      
+      22 001D  A1 0006 R		    MOV AX,V 
+      23 0020  99			    CWD         ;DX.AX=V 
+      24 0021  2B C3			    SUB AX,BX 
+      25 0023  1B D1			    SBB DX,CX   ;DX.AX=V-X*Y+Z-720    
+      26 0025  F7 3E 0000 R		    IDIV X      ;AX¥Ê…Ã£¨DX¥Ê”‡ ˝      
+      27				     
+      28				     
+      29 0029  B4 4C			    mov ah, 4Ch 
+      30 002B  CD 21			    int 21h 
+      31				 
+      32 002D				end main 
+Microsoft (R) Macro Assembler Version 5.00                  11/1/25 23:13:49
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+DGROUP . . . . . . . . . . . . .  	GROUP
+  _DATA  . . . . . . . . . . . .  	0008	WORD	PUBLIC	'DATA'
+  STACK  . . . . . . . . . . . .  	0100	PARA	STACK	'STACK'
+_TEXT  . . . . . . . . . . . . .  	002D	WORD	PUBLIC	'CODE'
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+MAIN . . . . . . . . . . . . . .  	L NEAR	0000	_TEXT
+
+V  . . . . . . . . . . . . . . .  	L WORD	0006	_DATA
+
+X  . . . . . . . . . . . . . . .  	L WORD	0000	_DATA
+
+Y  . . . . . . . . . . . . . . .  	L WORD	0002	_DATA
+
+Z  . . . . . . . . . . . . . . .  	L WORD	0004	_DATA
+
+@CODE  . . . . . . . . . . . . .  	TEXT  _TEXT		
+@CODESIZE  . . . . . . . . . . .  	TEXT  0		
+@DATASIZE  . . . . . . . . . . .  	TEXT  0		
+@FILENAME  . . . . . . . . . . .  	TEXT  CALC		
+
+
+     32 Source  Lines
+     32 Total   Lines
+     19 Symbols
+
+  50628 + 465916 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

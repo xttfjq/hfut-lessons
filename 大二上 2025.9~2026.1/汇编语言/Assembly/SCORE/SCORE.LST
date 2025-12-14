@@ -1,0 +1,212 @@
+Microsoft (R) Macro Assembler Version 5.00                  11/2/25 16:14:11
+                                                             Page     1-1
+
+
+       1 0000				DATA SEGMENT 
+       2 0000  55 5C 4E 40 58 5F 48	    SCORES DB 85, 92, 78, 64, 88, 95, 7
+					2, 81, 90, 67 
+       3       51 5A 43			
+       4 000A  53 4F 5B 56 4A 59 4C	           DB 83, 79, 91, 86, 74, 89, 7
+					6, 82, 94, 68 
+       5       52 5E 44			
+       6 0014  57 5D 4D 54 47 60 45	           DB 87, 93, 77, 84, 71, 96, 6
+					9, 80, 75, 98 
+       7       50 4B 62			
+       8 001E  41 49 61 46 63 42 63	           DB 65, 73, 97, 70, 99, 66, 9
+					9, 63, 89, 82 
+       9       3F 59 52			
+      10 0028  4E 5B 54 4C 57 5C 4F	           DB 78, 91, 84, 76, 87, 92, 7
+					9, 84, 90, 73   ; 50¸ö³É¼¨ 
+      11       54 5A 49			
+      12				     
+      13 0032  32			    COUNT DB 50         ; Ñ§ÉúÈËÊý 
+      14 0033  ??			    MAX DB ?           ; ×î´óÖµ 
+      15 0034  ??			    MIN DB ?           ; ×îÐ¡Öµ   
+      16 0035  ??			    AVERAGE DB ?       ; Æ½¾ùÖµ 
+      17				     
+      18 0036  4D 61 78 3A 20 24	    MSG_MAX DB 'Max: $' 
+      19 003C  4D 69 6E 3A 20 24	    MSG_MIN DB 'Min: $' 
+      20 0042  41 76 65 72 61 67 65	    MSG_AVG DB 'Average: $' 
+      21       3A 20 24			
+      22 004C  0D 0A 24			    NEWLINE DB 0DH, 0AH, '$'  ; »»ÐÐ 
+      23 004F				DATA ENDS 
+      24				 
+      25 0000				CODE SEGMENT 
+      26				    ASSUME CS:CODE, DS:DATA 
+      27 0000				START: 
+      28 0000  B8 ---- R		    MOV AX, DATA 
+      29 0003  8E D8			    MOV DS, AX 
+      30				     
+      31				    ; ³õÊ¼»¯ 
+      32 0005  BE 0000 R		    MOV SI, OFFSET SCORES  ; SIÖ¸Ïò³É¼¨
+					Êý×é 
+      33 0008  8A 0E 0032 R		    MOV CL, COUNT          ; Ñ­»·¼ÆÊýÆ÷
+					 
+      34 000C  8A 04			    MOV AL, [SI]           ; ³õÊ¼»¯×î´ó
+					ÖµºÍ×îÐ¡ÖµÎªµÚÒ»¸ö³É¼¨ 
+      35 000E  A2 0033 R		    MOV MAX, AL 
+      36 0011  A2 0034 R		    MOV MIN, AL 
+      37 0014  33 C0			    XOR AX, AX             ; Çå¿ÕAXÓÃÓÚ
+					ÀÛ¼ÓºÍ 
+      38 0016  33 DB			    XOR BX, BX             ; Çå¿ÕBX 
+      39				     
+      40 0018				CALC_LOOP: 
+      41 0018  8A 1C			    MOV BL, [SI]           ; ¶ÁÈ¡µ±Ç°³É
+					¼¨ 
+      42				     
+      43				    ; ÀÛ¼Ó×Ü·Ö 
+      44 001A  02 C3			    ADD AL, BL 
+Microsoft (R) Macro Assembler Version 5.00                  11/2/25 16:14:11
+                                                             Page     1-2
+
+
+      45 001C  80 D4 00			    ADC AH, 0              ; ´¦Àí½øÎ» 
+      46				     
+      47				    ; ±È½Ï×î´óÖµ 
+      48 001F  3A 1E 0033 R		    CMP BL, MAX 
+      49 0023  7E 04			    JLE CHECK_MIN 
+      50 0025  88 1E 0033 R		    MOV MAX, BL 
+      51				     
+      52 0029				CHECK_MIN: 
+      53				    ; ±È½Ï×îÐ¡Öµ   
+      54 0029  3A 1E 0034 R		    CMP BL, MIN 
+      55 002D  7D 04			    JGE NEXT_SCORE 
+      56 002F  88 1E 0034 R		    MOV MIN, BL 
+      57				     
+      58 0033				NEXT_SCORE: 
+      59 0033  46			    INC SI                 ; Ö¸ÏòÏÂÒ»¸ö
+					³É¼¨ 
+      60 0034  FE C9			    DEC CL                 ; ¼ÆÊýÆ÷¼õ1 
+      61 0036  75 E0			    JNZ CALC_LOOP          ; ¼ÌÐøÑ­»· 
+      62				     
+      63				    ; ¼ÆËãÆ½¾ùÖµ 
+      64 0038  8A 1E 0032 R		    MOV BL, COUNT 
+      65 003C  F6 F3			    DIV BL                 ; AX / BL£¬É
+					ÌÔÚAL£¬ÓàÊýÔÚAH 
+      66 003E  A2 0035 R		    MOV AVERAGE, AL 
+      67				     
+      68				    ; ÏÔÊ¾½á¹û 
+      69 0041  E8 0048 R		    CALL DISPLAY_RESULTS 
+      70				     
+      71				    ; ÍË³ö³ÌÐò 
+      72 0044  B4 4C			    MOV AH, 4CH 
+      73 0046  CD 21			    INT 21H 
+      74				 
+      75				; ÏÔÊ¾½á¹ûµÄ×Ó³ÌÐò 
+      76 0048				DISPLAY_RESULTS PROC 
+      77				    ; ÏÔÊ¾×î´óÖµ 
+      78 0048  B4 09			    MOV AH, 09H 
+      79 004A  8D 16 0036 R		    LEA DX, MSG_MAX 
+      80 004E  CD 21			    INT 21H 
+      81				     
+      82 0050  A0 0033 R		    MOV AL, MAX 
+      83 0053  E8 007C R		    CALL DISPLAY_NUMBER 
+      84 0056  E8 0097 R		    CALL NEW_LINE 
+      85				     
+      86				    ; ÏÔÊ¾×îÐ¡Öµ 
+      87 0059  B4 09			    MOV AH, 09H 
+      88 005B  8D 16 003C R		    LEA DX, MSG_MIN 
+      89 005F  CD 21			    INT 21H 
+      90				     
+      91 0061  A0 0034 R		    MOV AL, MIN 
+      92 0064  E8 007C R		    CALL DISPLAY_NUMBER 
+      93 0067  E8 0097 R		    CALL NEW_LINE 
+      94				     
+      95				    ; ÏÔÊ¾Æ½¾ùÖµ 
+      96 006A  B4 09			    MOV AH, 09H 
+Microsoft (R) Macro Assembler Version 5.00                  11/2/25 16:14:11
+                                                             Page     1-3
+
+
+      97 006C  8D 16 0042 R		    LEA DX, MSG_AVG 
+      98 0070  CD 21			    INT 21H 
+      99				     
+     100 0072  A0 0035 R		    MOV AL, AVERAGE 
+     101 0075  E8 007C R		    CALL DISPLAY_NUMBER 
+     102 0078  E8 0097 R		    CALL NEW_LINE 
+     103				     
+     104 007B  C3			    RET 
+     105 007C				DISPLAY_RESULTS ENDP 
+     106				 
+     107				; ÏÔÊ¾Á½Î»Êý×ÖµÄ×Ó³ÌÐò 
+     108 007C				DISPLAY_NUMBER PROC 
+     109 007C  B4 00			    MOV AH, 0 
+     110 007E  B3 0A			    MOV BL, 10 
+     111 0080  F6 F3			    DIV BL          ; AL = Ê®Î», AH = ¸
+					öÎ» 
+     112				     
+     113 0082  8A DC			    MOV BL, AH      ; ±£´æ¸öÎ» 
+     114				     
+     115				    ; ÏÔÊ¾Ê®Î» 
+     116 0084  8A D0			    MOV DL, AL 
+     117 0086  80 C2 30			    ADD DL, '0' 
+     118 0089  B4 02			    MOV AH, 02H 
+     119 008B  CD 21			    INT 21H 
+     120				     
+     121				    ; ÏÔÊ¾¸öÎ» 
+     122 008D  8A D3			    MOV DL, BL 
+     123 008F  80 C2 30			    ADD DL, '0' 
+     124 0092  B4 02			    MOV AH, 02H 
+     125 0094  CD 21			    INT 21H 
+     126				     
+     127 0096  C3			    RET 
+     128 0097				DISPLAY_NUMBER ENDP 
+     129				 
+     130				; »»ÐÐ×Ó³ÌÐò 
+     131 0097				NEW_LINE PROC 
+     132 0097  B4 09			    MOV AH, 09H 
+     133 0099  8D 16 004C R		    LEA DX, NEWLINE 
+     134 009D  CD 21			    INT 21H 
+     135 009F  C3			    RET 
+     136 00A0				NEW_LINE ENDP 
+     137				 
+     138 00A0				CODE ENDS 
+     139				END START 
+Microsoft (R) Macro Assembler Version 5.00                  11/2/25 16:14:11
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	00A0	PARA	NONE	
+DATA . . . . . . . . . . . . . .  	004F	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+AVERAGE  . . . . . . . . . . . .  	L BYTE	0035	DATA
+
+CALC_LOOP  . . . . . . . . . . .  	L NEAR	0018	CODE
+CHECK_MIN  . . . . . . . . . . .  	L NEAR	0029	CODE
+COUNT  . . . . . . . . . . . . .  	L BYTE	0032	DATA
+
+DISPLAY_NUMBER . . . . . . . . .  	N PROC	007C	CODE	Length = 001B
+DISPLAY_RESULTS  . . . . . . . .  	N PROC	0048	CODE	Length = 0034
+
+MAX  . . . . . . . . . . . . . .  	L BYTE	0033	DATA
+MIN  . . . . . . . . . . . . . .  	L BYTE	0034	DATA
+MSG_AVG  . . . . . . . . . . . .  	L BYTE	0042	DATA
+MSG_MAX  . . . . . . . . . . . .  	L BYTE	0036	DATA
+MSG_MIN  . . . . . . . . . . . .  	L BYTE	003C	DATA
+
+NEWLINE  . . . . . . . . . . . .  	L BYTE	004C	DATA
+NEW_LINE . . . . . . . . . . . .  	N PROC	0097	CODE	Length = 0009
+NEXT_SCORE . . . . . . . . . . .  	L NEAR	0033	CODE
+
+SCORES . . . . . . . . . . . . .  	L BYTE	0000	DATA
+START  . . . . . . . . . . . . .  	L NEAR	0000	CODE
+
+@FILENAME  . . . . . . . . . . .  	TEXT  SCORE		
+
+
+    133 Source  Lines
+    133 Total   Lines
+     20 Symbols
+
+  50600 + 465944 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

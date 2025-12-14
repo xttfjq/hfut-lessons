@@ -1,0 +1,147 @@
+Microsoft (R) Macro Assembler Version 5.00                  11/5/25 14:03:46
+                                                             Page     1-1
+
+
+       1 0000				data segment 
+       2 0000  54 68 65 20 30 20 42	    msg0 db 'The 0 Bit is 1$' 
+       3       69 74 20 69 73 20 31	
+       4       24			
+       5 000F  54 68 65 20 31 20 42	    msg1 db 'The 1 Bit is 1$' 
+       6       69 74 20 69 73 20 31	
+       7       24			
+       8 001E  54 68 65 20 32 20 42	    msg2 db 'The 2 Bit is 1$' 
+       9       69 74 20 69 73 20 31	
+      10       24			
+      11 002D  54 68 65 20 33 20 42	    msg3 db 'The 3 Bit is 1$' 
+      12       69 74 20 69 73 20 31	
+      13       24			
+      14 003C  54 68 65 20 34 20 42	    msg4 db 'The 4 Bit is 1$' 
+      15       69 74 20 69 73 20 31	
+      16       24			
+      17 004B  54 68 65 20 35 20 42	    msg5 db 'The 5 Bit is 1$' 
+      18       69 74 20 69 73 20 31	
+      19       24			
+      20 005A  54 68 65 20 36 20 42	    msg6 db 'The 6 Bit is 1$' 
+      21       69 74 20 69 73 20 31	
+      22       24			
+      23 0069  54 68 65 20 37 20 42	    msg7 db 'The 7 Bit is 1$' 
+      24       69 74 20 69 73 20 31	
+      25       24			
+      26 0078  0023 R 0029 R 002F R	    jmp_table dw offset m0, offset m1, 
+					offset m2, offset m3 
+      27       0035 R			
+      28 0080  003B R 0041 R 0047 R	              dw offset m4, offset m5, 
+					offset m6, offset m7 
+      29       004D R			
+      30 0088				data ends 
+      31				 
+      32 0000				code segment 
+      33				assume cs:code, ds:data 
+      34 0000				start: 
+      35 0000  B8 ---- R		    mov ax, data 
+      36 0003  8E D8			    mov ds, ax 
+      37				 
+      38 0005  B3 04			    mov bl, 00000100b  ; ²âÊÔÖµ£ºbit 2 
+					Îª 1£¬¿ÉÐÞ¸Ä²âÊÔÆäËûÎ» 
+      39				 
+      40 0007  B7 00			    mov bh, 0 
+      41 0009  B9 0008			    mov cx, 8 
+      42 000C				find_bit: 
+      43 000C  D0 EB			    shr bl, 1 
+      44 000E  72 07			    jc found 
+      45 0010  FE C7			    inc bh 
+      46 0012  E2 F8			    loop find_bit 
+      47 0014  EB 3E 90			    jmp exit 
+      48				 
+      49 0017				found: 
+      50 0017  8A C7			    mov al, bh 
+      51 0019  B4 00			    mov ah, 0 
+Microsoft (R) Macro Assembler Version 5.00                  11/5/25 14:03:46
+                                                             Page     1-2
+
+
+      52 001B  D1 E0			    shl ax, 1          ; ³Ë2£¨ÒòÎª±íÏîÊ
+					Ç×Ö£© 
+      53 001D  8B F0			    mov si, ax 
+      54 001F  FF A4 0078 R		    jmp jmp_table[si] 
+      55				 
+      56 0023  BA 0000 R		m0: mov dx, offset msg0 
+      57 0026  EB 28 90			    jmp print 
+      58 0029  BA 000F R		m1: mov dx, offset msg1 
+      59 002C  EB 22 90			    jmp print 
+      60 002F  BA 001E R		m2: mov dx, offset msg2 
+      61 0032  EB 1C 90			    jmp print 
+      62 0035  BA 002D R		m3: mov dx, offset msg3 
+      63 0038  EB 16 90			    jmp print 
+      64 003B  BA 003C R		m4: mov dx, offset msg4 
+      65 003E  EB 10 90			    jmp print 
+      66 0041  BA 004B R		m5: mov dx, offset msg5 
+      67 0044  EB 0A 90			    jmp print 
+      68 0047  BA 005A R		m6: mov dx, offset msg6 
+      69 004A  EB 04 90			    jmp print 
+      70 004D  BA 0069 R		m7: mov dx, offset msg7 
+      71				 
+      72 0050				print: 
+      73 0050  B4 09			    mov ah, 9 
+      74 0052  CD 21			    int 21h 
+      75				 
+      76 0054				exit: 
+      77 0054  B4 4C			    mov ah, 4ch 
+      78 0056  CD 21			    int 21h 
+      79				 
+      80 0058				code ends 
+      81				end start 
+Microsoft (R) Macro Assembler Version 5.00                  11/5/25 14:03:46
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	0058	PARA	NONE	
+DATA . . . . . . . . . . . . . .  	0088	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+EXIT . . . . . . . . . . . . . .  	L NEAR	0054	CODE
+
+FIND_BIT . . . . . . . . . . . .  	L NEAR	000C	CODE
+FOUND  . . . . . . . . . . . . .  	L NEAR	0017	CODE
+
+JMP_TABLE  . . . . . . . . . . .  	L WORD	0078	DATA
+
+M0 . . . . . . . . . . . . . . .  	L NEAR	0023	CODE
+M1 . . . . . . . . . . . . . . .  	L NEAR	0029	CODE
+M2 . . . . . . . . . . . . . . .  	L NEAR	002F	CODE
+M3 . . . . . . . . . . . . . . .  	L NEAR	0035	CODE
+M4 . . . . . . . . . . . . . . .  	L NEAR	003B	CODE
+M5 . . . . . . . . . . . . . . .  	L NEAR	0041	CODE
+M6 . . . . . . . . . . . . . . .  	L NEAR	0047	CODE
+M7 . . . . . . . . . . . . . . .  	L NEAR	004D	CODE
+MSG0 . . . . . . . . . . . . . .  	L BYTE	0000	DATA
+MSG1 . . . . . . . . . . . . . .  	L BYTE	000F	DATA
+MSG2 . . . . . . . . . . . . . .  	L BYTE	001E	DATA
+MSG3 . . . . . . . . . . . . . .  	L BYTE	002D	DATA
+MSG4 . . . . . . . . . . . . . .  	L BYTE	003C	DATA
+MSG5 . . . . . . . . . . . . . .  	L BYTE	004B	DATA
+MSG6 . . . . . . . . . . . . . .  	L BYTE	005A	DATA
+MSG7 . . . . . . . . . . . . . .  	L BYTE	0069	DATA
+
+PRINT  . . . . . . . . . . . . .  	L NEAR	0050	CODE
+
+START  . . . . . . . . . . . . .  	L NEAR	0000	CODE
+
+@FILENAME  . . . . . . . . . . .  	TEXT  ex1		
+
+
+     63 Source  Lines
+     63 Total   Lines
+     26 Symbols
+
+  50580 + 465964 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

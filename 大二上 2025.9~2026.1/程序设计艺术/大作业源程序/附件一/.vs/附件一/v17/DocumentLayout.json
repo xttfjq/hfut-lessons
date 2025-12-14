@@ -1,0 +1,51 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\\u4E2A\u4EBA\\\u5B66\u4E60\\\u8BFE\u7A0B\\\u7A0B\u5E8F\u8BBE\u8BA1\u827A\u672F\\\u5927\u4F5C\u4E1A\u6E90\u7A0B\u5E8F\\\u9644\u4EF6\u4E00\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Microsoft Visual Studio\\2022\\Professional\\VC\\Tools\\MSVC\\14.44.35207\\include\\list||{3B902123-F8A7-4915-9F01-361F908088D0}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{49BDA022-9ED9-46A9-BE94-C7FF173AC103}|\u9644\u4EF6\u4E00\\\u9644\u4EF6\u4E00.vcxproj|E:\\\u4E2A\u4EBA\\\u5B66\u4E60\\\u8BFE\u7A0B\\\u7A0B\u5E8F\u8BBE\u8BA1\u827A\u672F\\\u5927\u4F5C\u4E1A\u6E90\u7A0B\u5E8F\\\u9644\u4EF6\u4E00\\\u9644\u4EF6\u4E00\\\u9644\u4EF6\u4E00.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{49BDA022-9ED9-46A9-BE94-C7FF173AC103}|\u9644\u4EF6\u4E00\\\u9644\u4EF6\u4E00.vcxproj|solutionrelative:\u9644\u4EF6\u4E00\\\u9644\u4EF6\u4E00.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "list",
+              "DocumentMoniker": "D:\\Microsoft Visual Studio\\2022\\Professional\\VC\\Tools\\MSVC\\14.44.35207\\include\\list",
+              "ToolTip": "D:\\Microsoft Visual Studio\\2022\\Professional\\VC\\Tools\\MSVC\\14.44.35207\\include\\list",
+              "ViewState": "AgIAAJQAAAAAAAAAAAAQwKAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-10-23T10:59:41.997Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "\u9644\u4EF6\u4E00.cpp",
+              "DocumentMoniker": "E:\\\u4E2A\u4EBA\\\u5B66\u4E60\\\u8BFE\u7A0B\\\u7A0B\u5E8F\u8BBE\u8BA1\u827A\u672F\\\u5927\u4F5C\u4E1A\u6E90\u7A0B\u5E8F\\\u9644\u4EF6\u4E00\\\u9644\u4EF6\u4E00\\\u9644\u4EF6\u4E00.cpp",
+              "RelativeDocumentMoniker": "\u9644\u4EF6\u4E00\\\u9644\u4EF6\u4E00.cpp",
+              "ToolTip": "E:\\\u4E2A\u4EBA\\\u5B66\u4E60\\\u8BFE\u7A0B\\\u7A0B\u5E8F\u8BBE\u8BA1\u827A\u672F\\\u5927\u4F5C\u4E1A\u6E90\u7A0B\u5E8F\\\u9644\u4EF6\u4E00\\\u9644\u4EF6\u4E00\\\u9644\u4EF6\u4E00.cpp",
+              "RelativeToolTip": "\u9644\u4EF6\u4E00\\\u9644\u4EF6\u4E00.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-10-23T10:35:58.697Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
