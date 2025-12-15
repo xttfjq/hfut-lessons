@@ -1,3 +1,0 @@
-﻿  ConsoleApplication5.cpp
-E:\个人\学习\课程\程序设计艺术\大作业源程序\ConsoleApplication5\ConsoleApplication5\ConsoleApplication5.cpp(71,19): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-  ConsoleApplication5.vcxproj -> E:\个人\学习\课程\程序设计艺术\大作业源程序\ConsoleApplication5\x64\Debug\ConsoleApplication5.exe
